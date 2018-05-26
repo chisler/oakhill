@@ -53,7 +53,7 @@ const actions = {
     name: "takeTwenty",
     reaction: "Вау, можно столько всего купить",
     mutateLocation: { 2: "hotel_view_no_money" },
-    triggers: { take: ["вз", "подн"], twenty: ["ден", "двадц"] }
+    triggers: { take: ["вз", "подн","возьми"], twenty: ["ден", "двадц","купюр"] }
   },
   backToHotel: {
     id: 4,
