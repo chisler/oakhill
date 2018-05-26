@@ -63,7 +63,7 @@ const actions = {
     reaction: "",
     name: "backToHotel",
     mutateLocation: {},
-    triggers: { go: ["назад", "откр", "вой"], hotel: ["отел", "двер"] }
+    triggers: { go: ["назад", "откр", "вой", "зай"], hotel: ["отел", "двер"] }
   }
 };
 
