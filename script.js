@@ -1,70 +1,79 @@
-
-
-const lines = [];
 const maxLines = 4;
 
-const scrollback = document.querySelector('.scrollback');
-const input = document.querySelector('input');
-
-const verbs = ['go'];
+const scrollback = document.querySelector(".scrollback");
+const input = document.querySelector("input");
 
 function print(text, raw = false) {
-    lines.push(raw ? text : escapeHtml(text));
-    while(lines.length > maxLines) {
-        lines.shift();
-    }
-    scrollback.innerHTML = lines.join('\n');
-    scrollback.scrollTop = Math.pow(2, 30); // Firefox doesn't like Number.MAX_SAFE_INTEGER for this
+  state.output.push(raw ? text : escapeHtml(text));
+  while (state.output.length > maxLines) {
+    state.output.shift();
+  }
+  scrollback.innerHTML = state.output.join("\n");
+  scrollback.scrollTop = Math.pow(2, 30); // Firefox doesn't like Number.MAX_SAFE_INTEGER for this
 }
 
 function action(text) {
-    print('\n<kbd>' + escapeHtml(text) + '</kbd>', true);
-    let [verb, noun] = text.split(' ');
-    if (!verbs.includes(verb)) {
-        print('Funny you say that.');
-    return;
+  print("\n<kbd>" + escapeHtml(text) + "</kbd>", true);
+  // see inventory
+  if ((text === "р" || text === "рюкзак") && state.locations[1] != "init") {
+    if (state.inventory.length != 0) {
+      print(state.inventory.join(", ") + ".");
+    } else {
+      print("Рюкзак пока пустой.");
     }
-    if (verb === 'open' && noun == 'door') {
-        print('Yes, you can open the door.');
     return;
-    }
+  }
+
+  let validActions = findAction(text);
+  //   handle mistakee
+  if (!validActions | (validActions.length != 1)) {
+    print("Не факт, что это выйдет.");
+    return;
+  }
+
+  console.log("found valid actions", validActions);
+  const validAction = validActions[0];
+  takeAction(validAction);
+  if (validAction.type == "move") {
+    print(state.location.initText);
+  }
+  renderState();
+
+  return;
 }
 
-input.addEventListener('keydown', function(e) {
+function init() {
+  input.addEventListener("keydown", function(e) {
     if (e.keyCode === 13 /* return */ && input.value.trim()) {
-        action(input.value.trim());
-    input.value = '';
+      action(input.value.trim());
+      input.value = "";
     }
-});
+  });
 
-var alwaysFocusedInput = document.getElementById( "input_command" );
+  var alwaysFocusedInput = document.getElementById("input_command");
 
-alwaysFocusedInput.addEventListener( "blur", function() {
-  setTimeout(() =>{
-    alwaysFocusedInput.focus();
-  }, 0);
-});
+  alwaysFocusedInput.addEventListener("blur", function() {
+    setTimeout(() => {
+      alwaysFocusedInput.focus();
+    }, 0);
+  });
 
-// "escapeHtml" function borrowed from:
-// https://github.com/janl/mustache.js/blob/master/mustache.js
-const entityMap = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-    '/': '&#x2F;',
-    '`': '&#x60;',
-    '=': '&#x3D;'
-};
-function escapeHtml (string) {
-    return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+  print(state.location.initText);
+  renderState(state);
 }
 
+const entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+  "/": "&#x2F;",
+  "`": "&#x60;",
+  "=": "&#x3D;"
+};
+function escapeHtml(string) {
+  return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+}
 
-
-(function main() {
-    input.focus();
-    print('Oak Hill is great. Welcome.');
-    print('Do anything you want');
-})();
+init();

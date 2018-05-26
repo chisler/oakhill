@@ -3,7 +3,7 @@ html, body {
   padding: 0;
   background-color: black;
   color: white; 
-  font-family: Georgia, Palatino, serif;
+  font-family: DejaVu Sans Mono, monospace;
 }
 
 .scrollback {
