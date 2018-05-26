@@ -1,4 +1,14 @@
 const actions = {
+  start: {
+    id: 0,
+    type: "move",
+    newItems: [],
+    destination_id: 1,
+    name: "start",
+    reaction: "",
+    mutateLocation: {},
+    triggers: { agree: ["ок", "да"] }
+  },
   leaveHotel: {
     id: 1,
     type: "move",
@@ -7,7 +17,7 @@ const actions = {
     name: "leaveHotel",
     reaction: "",
     mutateLocation: {},
-    triggers: { door: ["двер"], open: ["выйт", "откр"] }
+    triggers: { door: ["двер", "улиц"], open: ["выйт", "откр"] }
   },
   takeBackpack: {
     id: 2,
@@ -58,15 +68,26 @@ const actions = {
 };
 
 const locations = {
+  0: {
+    intro: {
+      img: "0_intro.jpg",
+      initText: "Ок?",
+      possibleActions: [actions.start]
+    }
+  },
   1: {
     init: {
       img: "1_with_backpack.jpg",
       initText: "Папы нет уже очень долго.",
-      possibleActions: [actions.leaveHotel,actions.watchTV, actions.takeBackpack]
+      possibleActions: [
+        actions.leaveHotel,
+        actions.watchTV,
+        actions.takeBackpack
+      ]
     },
     no_back_pack: {
       img: "1.jpg",
-      initText: "Ммм...что еще делать в этом отеле.",
+      initText: "Ммм...теперь у меня есть рюкзак. <i>Можно проверить его командой «р» или «рюкзак»</i>",
       possibleActions: [actions.leaveHotel, actions.watchTV]
     }
   },

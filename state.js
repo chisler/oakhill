@@ -41,6 +41,6 @@ function renderState() {
 var state = {
   output: [],
   inventory: [],
-  locations: { 1: "init", 2: "hotel_view" }
+  locations: { 0: "intro", 1: "init", 2: "hotel_view" }
 };
-state.location = getCurrentLocation(1);
+state.location = getCurrentLocation(0);

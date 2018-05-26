@@ -19,7 +19,7 @@ function action(text) {
     if (state.inventory.length != 0) {
       print(state.inventory.join(", ") + ".");
     } else {
-      print("Рюкзак пока пустой.");
+      print("Рюкзак пока пуст.");
     }
     return;
   }

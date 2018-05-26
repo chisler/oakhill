@@ -64,3 +64,5 @@ input {
 input:focus {
   outline-width: 0;
 }
+
+.border { border-width: 1px; border-color: white; border-style: solid; } 
