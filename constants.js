@@ -59,8 +59,14 @@ const actions = {
     destination_id: 2,
     name: "takeTwenty",
     reaction: "Вау, можно столько всего купить",
+<<<<<<< HEAD
     mutateLocationState: { 2: { money: true } },
     triggers: { take: ["вз", "подн"], twenty: ["ден", "двадц", "банкн"] }
+=======
+    mutateLocation: { 2: "hotel_view_no_money" },
+    triggers: { take: ["вз", "подн","возьми"], twenty: ["ден", "двадц","купюр","банкнот"] }
+
+>>>>>>> 5350adfc119614c30c5ed97b4575325bd4459b79
   },
   backToHotel: {
     type: "move",
