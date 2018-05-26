@@ -14,3 +14,7 @@ Array.prototype.unique = function() {
 
   return a;
 };
+
+function no(boo) {
+  return boo ? "no_" : "";
+}

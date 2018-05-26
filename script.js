@@ -35,13 +35,10 @@ function action(text) {
   const validAction = validActions[0];
   takeAction(validAction);
 
-  if (validAction.reaction && (validAction.reaction.length != 0)) {
+  if (validAction.reaction && validAction.reaction.length != 0) {
     print(validAction.reaction);
   }
 
-  if (validAction.type == "move") {
-    print(state.location.initText);
-  }
   renderState();
 
   return;
@@ -63,7 +60,6 @@ function init() {
     }, 0);
   });
 
-  print(state.location.initText);
   renderState(state);
 }
 

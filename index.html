@@ -1,12 +1,14 @@
 <head>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Comfortaa&subset=latin,cyrillic"> 
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Comfortaa&subset=latin,cyrillic">
     <meta charset="utf-8" />
 </head>
 
+<span onclick="resetState(); renderState();">X</span>
+
 <div class="Modal">
     <div class="Modal-content">
-        <img src="1.jpg" id="image_id" class="border">
+        <img src="" id="image_id" class="border">
         <div class="scrollback"></div>
         <div class="input-left">
             <input class="TextInput" type="text" id="input_command" />
@@ -18,3 +20,8 @@
 <script src="constants.js"></script>
 <script src="state.js"></script>
 <script src="script.js"></script>
+
+<script>
+    loadState()
+
+</script>
