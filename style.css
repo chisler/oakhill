@@ -15,7 +15,7 @@ html, body {
   font-family: sans-serif;
   line-height: 1.4;
   height: 150px;
-  overflow: hidden;
+  overflow: none;
 }
 .scrollback > kbd {
   font-family: inherit;

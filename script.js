@@ -33,15 +33,16 @@ function action(text) {
 
   console.log("found valid actions", validActions);
   const validAction = validActions[0];
-  takeAction(validAction);
+  if (!validAction.requiredItems.every(item => state.inventory.includes(item))) {
+    print('Чего-то не хватает!')
+    return;
+  }
 
-  if (validAction.reaction && (validAction.reaction.length != 0)) {
+  takeAction(validAction);
+  if (validAction.reaction && validAction.reaction.length != 0) {
     print(validAction.reaction);
   }
 
-  if (validAction.type == "move") {
-    print(state.location.initText);
-  }
   renderState();
 
   return;
@@ -63,7 +64,6 @@ function init() {
     }, 0);
   });
 
-  print(state.location.initText);
   renderState(state);
 }
 
