@@ -32,9 +32,6 @@ function takeAction(action) {
     "new state",
     state
   );
-  if (action.reaction & (action.reaction.length != 0)) {
-    print(reaction);
-  }
 }
 
 function renderState() {

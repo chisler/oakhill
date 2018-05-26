@@ -34,6 +34,11 @@ function action(text) {
   console.log("found valid actions", validActions);
   const validAction = validActions[0];
   takeAction(validAction);
+
+  if (validAction.reaction && (validAction.reaction.length != 0)) {
+    print(validAction.reaction);
+  }
+
   if (validAction.type == "move") {
     print(state.location.initText);
   }

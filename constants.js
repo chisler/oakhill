@@ -22,6 +22,19 @@ const actions = {
       backpack: ["рюкз", "портф", "ранец"]
     }
   },
+  watchTV: {
+    id: 5,
+    type: "use",
+    newItems: [],
+    destination_id: 1,
+    name: "watchTV",
+    reaction: "Телек не работает",
+    mutateLocation: {},
+    triggers: {
+      turnOn: ["смотр", "вкл", "вруб"],
+      tv: ["теле", "тиви", "тв"]
+    }
+  },
   takeTwenty: {
     id: 3,
     type: "move",
@@ -49,12 +62,12 @@ const locations = {
     init: {
       img: "1_with_backpack.jpg",
       initText: "Папы нет уже очень долго.",
-      possibleActions: [actions.leaveHotel, actions.takeBackpack]
+      possibleActions: [actions.leaveHotel,actions.watchTV, actions.takeBackpack]
     },
     no_back_pack: {
       img: "1.jpg",
       initText: "Ммм...что еще делать в этом отеле.",
-      possibleActions: [actions.leaveHotel]
+      possibleActions: [actions.leaveHotel, actions.watchTV]
     }
   },
   2: {
