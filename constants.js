@@ -2,6 +2,7 @@ const actions = {
   start: {
     type: "move",
     newItems: [],
+    requiredItems: [],
     destination_id: 1,
     name: "start",
     reaction: "",
@@ -11,6 +12,7 @@ const actions = {
   leaveHotel: {
     type: "move",
     newItems: [],
+    requiredItems: [],
     destination_id: 2,
     name: "leaveHotel",
     reaction: "",
@@ -20,6 +22,7 @@ const actions = {
   takeBackpack: {
     type: "take",
     newItems: [],
+    requiredItems: [],
     destination_id: 1,
     name: "takeBackpack",
     reaction: "О, теперь будет куда положить вещи",
@@ -32,6 +35,7 @@ const actions = {
   takeKlaxon: {
     type: "take",
     newItems: ["клаксон"],
+    requiredItems: [],
     destination_id: 1,
     name: "takeKlaxon",
     reaction: "Теперь у меня есть клаксон.",
@@ -44,6 +48,7 @@ const actions = {
   watchTV: {
     type: "use",
     newItems: [],
+    requiredItems: [],
     destination_id: 1,
     name: "watchTV",
     reaction: "Телек не работает",
@@ -56,20 +61,58 @@ const actions = {
   takeTwenty: {
     type: "take",
     newItems: ["двадцатка"],
+    requiredItems: [],
     destination_id: 2,
     name: "takeTwenty",
     reaction: "Вау, можно столько всего купить",
     mutateLocationState: { 2: { money: true } },
-    triggers: { take: ["вз", "подн","возьми"], twenty: ["ден", "двадц","купюр","банкнот"] }
+    triggers: {
+      take: ["вз", "подн", "возьми"],
+      twenty: ["ден", "двадц", "купюр", "банкнот"]
+    }
   },
   backToHotel: {
     type: "move",
     newItems: [],
+    requiredItems: [],
     destination_id: 1,
     reaction: "",
     name: "backToHotel",
     mutateLocationState: {},
     triggers: { go: ["назад", "откр", "вой", "зай"], hotel: ["отел", "двер"] }
+  },
+  goToDeer: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 3,
+    reaction: "",
+    name: "goToDeer",
+    mutateLocationState: {},
+    triggers: { go: ["ид"], further: ["дорог", "впер"] }
+  },
+  backToHotelView: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 2,
+    reaction: "",
+    name: "backToHotelView",
+    mutateLocationState: {},
+    triggers: { go: ["назад"] }
+  },
+  useKlaxon: {
+    type: "use",
+    newItems: ["двадцатка"],
+    requiredItems: ["клаксон"],
+    destination_id: 3,
+    name: "useKlaxon",
+    reaction: "",
+    mutateLocationState: { 3: { deer: true } },
+    triggers: {
+      rang: ["дуд", "польз", "дут"],
+      klaxon: ["клакс", "дудк", "горн"]
+    }
   }
 };
 
@@ -122,16 +165,35 @@ const locations = {
     mapper: state => {
       return "hotel_view_" + no(state.money) + "money";
     },
-    staticActions: [actions.backToHotel],
+    staticActions: [actions.backToHotel, actions.goToDeer],
     variations: {
       hotel_view_money: {
-        img: "2.jpg",
+        img: "2_hotel_view_money.jpg",
         initText: "Впереди город, на дороге лежит двадцатка.",
         possibleActions: [actions.takeTwenty]
       },
       hotel_view_no_money: {
-        img: "2_no_money.jpg",
+        img: "2_hotel_view_no_money.jpg",
         initText: "Оак Хилл — прямо по дороге...",
+        possibleActions: []
+      }
+    }
+  },
+  3: {
+    initialState: { deer: false },
+    mapper: state => {
+      return "deer_" + no(state.deer) + "block";
+    },
+    staticActions: [actions.backToHotelView],
+    variations: {
+      deer_block: {
+        img: "3_deer_block.jpg",
+        initText: "Кажется, олень не даст пройти просто так. \n Я боюсь.",
+        possibleActions: [actions.useKlaxon]
+      },
+      deer_no_block: {
+        img: "3_deer_no_block.jpg",
+        initText: "Фуууух, ушел. Можно идти",
         possibleActions: []
       }
     }
