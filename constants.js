@@ -53,7 +53,11 @@ const actions = {
     name: "takeTwenty",
     reaction: "Вау, можно столько всего купить",
     mutateLocation: { 2: "hotel_view_no_money" },
+<<<<<<< HEAD
     triggers: { take: ["вз", "подн","возьми"], twenty: ["ден", "двадц","купюр"] }
+=======
+    triggers: { take: ["вз", "подн"], twenty: ["ден", "двадц", "банкн"] }
+>>>>>>> f855beeedc14c583d73a633d68c9f3efe0de7ac7
   },
   backToHotel: {
     id: 4,
@@ -87,7 +91,7 @@ const locations = {
     },
     no_back_pack: {
       img: "1.jpg",
-      initText: "Ммм...теперь у меня есть рюкзак. <i>Можно проверить его командой «р» или «рюкзак»</i>",
+      initText: "Ммм...теперь у меня есть рюкзак. Можно проверить его командой «р» или «рюкзак»",
       possibleActions: [actions.leaveHotel, actions.watchTV]
     }
   },
