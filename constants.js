@@ -126,7 +126,7 @@ const locations = {
     variations: {
       intro: {
         img: "0_intro.jpg",
-        initText: "Ок?",
+        initText: "Чтобы начать, наберите «ок».",
         possibleActions: []
       }
     }

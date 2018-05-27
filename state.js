@@ -1,8 +1,21 @@
-var state = {};
-resetState();
+loadState();
 
 function saveState() {
   localStorage.setItem("state", JSON.stringify(state));
+}
+
+function updateGameId() {
+  $.ajax({
+    type: "GET",
+    url: backendURI + "game/",
+    async: true,
+    beforeSend: function(request) {
+      request.setRequestHeader("Authorization", "Negotiate");
+    },
+    success: function(r) {
+      state.gameId = r.id;
+    }
+  });
 }
 
 function resetState() {
@@ -14,13 +27,23 @@ function resetState() {
   };
   state.locations = values(locations).map(l => l.initialState);
   state.location = getCurrentLocation(state.location_id);
+  addToOutput(state.location.initText);
+  updateGameId();
 }
 
 function loadState() {
   let savedState = localStorage.getItem("state");
   if (savedState) {
     state = JSON.parse(savedState);
-    renderState();
+  } else {
+    resetState();
+  }
+}
+
+function addToOutput(text, raw = false, maxLines = 4) {
+  state.output.push(raw ? text : escapeHtml(text));
+  while (state.output.length > maxLines || state.output[0] == "\n") {
+    state.output.shift();
   }
 }
 
@@ -79,10 +102,10 @@ function takeAction(action) {
   state.location = getCurrentLocation(destination_id) || state.location;
   state.location_id = destination_id || state.location_id;
   console.log("new state", state);
-  saveState();
 }
 
 function renderState() {
-  console.log('IMAGE RENDERED')
+  console.log("IMAGE RENDERED");
+  renderText();
   document.getElementById("image_id").src = "img/" + state.location.img;
 }

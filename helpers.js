@@ -20,9 +20,9 @@ function no(boo) {
 }
 
 function capitalize(str) {
-  return str.replace(/((?:^|[.?!])\s*)([a-zа-яё])/g, function (m, tail, ch) {
-  return tail + ch.toUpperCase();
-});
+  return str.replace(/((?:^|[.?!])\s*)([a-zа-яё])/g, function(m, tail, ch) {
+    return tail + ch.toUpperCase();
+  });
 }
 
 const entityMap = {
@@ -37,4 +37,14 @@ const entityMap = {
 };
 function escapeHtml(string) {
   return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+}
+
+var backendURI = "https://shielded-chamber-22105.herokuapp.com/";
+
+function reportInput(text) {
+  $.post(backendURI + "save/", {
+    state: JSON.stringify(state),
+    textInput: text,
+    gameId: state.gameId
+  });
 }
