@@ -14,6 +14,7 @@ function updateGameId() {
     },
     success: function(r) {
       state.gameId = r.id;
+      saveState();
     }
   });
 }
