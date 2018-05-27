@@ -139,22 +139,22 @@ const locations = {
     staticActions: [actions.leaveHotel, actions.watchTV],
     variations: {
       backpack_klaxon: {
-        img: "1_backpack_klaxon.jpg",
+        img: "motel_room_backpack.png",
         initText: "Папы нет уже очень долго.",
         possibleActions: [actions.takeBackpack, actions.takeKlaxon]
       },
       no_backpack_klaxon: {
-        img: "1_no_backpack_klaxon.jpg",
+        img: "motel_room_no_backpack.png",
         initText: "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
         possibleActions: [actions.takeKlaxon]
       },
       backpack_no_klaxon: {
-        img: "1_backpack_no_klaxon.jpg",
+        img: "motel_room_backpack_open_stand.png",
         initText: "Ура, мне точно пригодится клаксон.",
         possibleActions: [actions.takeBackpack]
       },
       no_backpack_no_klaxon: {
-        img: "1_no_backpack_no_klaxon.jpg",
+        img: "motel_room_no_backpack_open_stand.png",
         initText: "Что-то классное ждет меня",
         possibleActions: []
       }
@@ -168,12 +168,12 @@ const locations = {
     staticActions: [actions.backToHotel, actions.goToDeer],
     variations: {
       hotel_view_money: {
-        img: "2_hotel_view_money.jpg",
+        img: "motel_money.png",
         initText: "Впереди город, на дороге лежит двадцатка.",
         possibleActions: [actions.takeTwenty]
       },
       hotel_view_no_money: {
-        img: "2_hotel_view_no_money.jpg",
+        img: "motel_no_money.png",
         initText: "Оак Хилл — прямо по дороге...",
         possibleActions: []
       }
@@ -187,12 +187,12 @@ const locations = {
     staticActions: [actions.backToHotelView],
     variations: {
       deer_block: {
-        img: "3_deer_block.jpg",
+        img: "town_entrance_deer.png",
         initText: "Кажется, олень не даст пройти просто так. \n Я боюсь.",
         possibleActions: [actions.useKlaxon]
       },
       deer_no_block: {
-        img: "3_deer_no_block.jpg",
+        img: "town_entrance_no_deer.png",
         initText: "Фуууух, ушел. Можно идти",
         possibleActions: []
       }

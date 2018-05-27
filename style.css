@@ -65,4 +65,9 @@ input:focus {
   outline-width: 0;
 }
 
+.picture {
+  width: 554px;
+  height: 310px;
+}
+
 .border { border-width: 1px; border-color: white; border-style: solid; } 

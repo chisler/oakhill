@@ -23,7 +23,7 @@ function action(text) {
     }
     return;
   }
-
+  
   let validActions = findAction(text);
   //   handle mistakee
   if (!validActions | (validActions.length != 1)) {

@@ -55,9 +55,19 @@ function getCurrentLocation(id) {
 }
 
 function takeAction(action) {
-  const { destination_id, type, newItems, mutateLocationState, requiredItems } = action;
+  const {
+    destination_id,
+    type,
+    newItems,
+    mutateLocationState,
+    requiredItems
+  } = action;
   console.log("Action taken", action);
   // debugger
+
+  if (type == "move") {
+    state.output = [];
+  }
 
   state.inventory = [...action.newItems, ...state.inventory].unique();
   Object.keys(mutateLocationState).forEach(key => {
@@ -74,5 +84,5 @@ function takeAction(action) {
 
 function renderState() {
   print(state.location.initText);
-  document.getElementById("image_id").src = 'img/' + state.location.img;
+  document.getElementById("image_id").src = "img/" + state.location.img;
 }
