@@ -101,6 +101,16 @@ const actions = {
     mutateLocationState: {},
     triggers: { go: ["назад", "верн", "отель"] }
   },
+  toSmartMartFromRoad: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 5,
+    reaction: "",
+    name: "toSmartMartFromRoad",
+    mutateLocationState: {},
+    triggers: { shop: ["смарт", "магаз"] }
+  },
   useKlaxon: {
     type: "use",
     newItems: ["двадцатка"],
@@ -184,7 +194,7 @@ const locations = {
     mapper: state => {
       return "deer_" + no(state.deer) + "block";
     },
-    staticActions: [actions.backToHotelView],
+    staticActions: [actions.backToHotelView, actions.toSmartMartFromRoad],
     variations: {
       deer_block: {
         img: "town_entrance_deer.png",
@@ -194,6 +204,21 @@ const locations = {
       deer_no_block: {
         img: "town_entrance_no_deer.png",
         initText: "Фуууух, ушел. Можно идти",
+        possibleActions: []
+      }
+    }
+  },
+  5: {
+    initialState: {},
+    mapper: state => {
+      return "smart_mart";
+    },
+    staticActions: [actions.backToHotelView],
+    variations: {
+      smart_mart: {
+        dialog: "smart_mart",
+        img: "smart_mart.JPG",
+        initText: "Привет! Как помочь? \n a) Папу моего видели? \n б) Что вы продаете? ",
         possibleActions: []
       }
     }

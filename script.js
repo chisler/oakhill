@@ -6,51 +6,50 @@ function renderText() {
   scrollback.scrollTop = Math.pow(2, 30); // Firefox doesn't like Number.MAX_SAFE_INTEGER for this
 }
 
-function showInventory() {
-  if (state.inventory.length != 0) {
-    addToOutput(capitalize(state.inventory.join(", ") + "."));
-  } else {
-    addToOutput("Рюкзак пока пуст.");
+function act(text) {
+  if (
+    (text === "р" || text === "рюкзак") &&
+    state.locations[1].backpack !== false
+  ) {
+    showInventory();
+    return;
+  }
+
+  // check for current dialog
+  if (state.dialog && processDialog(state.dialog, text)) {
+    // transition was made, action taken;
+    return;
+  }
+
+  let validActions = findAction(text);
+  if (!validActions | (validActions.length != 1)) {
+    addToOutput("Не факт, что это выйдет.");
+    return;
+  }
+  const validAction = validActions[0];
+
+  if (
+    !validAction.requiredItems.every(item => state.inventory.includes(item))
+  ) {
+    addToOutput("Чего-то не хватает!");
+    return;
+  }
+
+  takeAction(validAction);
+  if (validAction.reaction && validAction.reaction.length != 0) {
+    addToOutput(validAction.reaction);
+  }
+
+  addToOutput("\n");
+  if (validAction.type == "move") {
+    addToOutput(state.location.initText);
   }
 }
 
 function action(text) {
   addToOutput("<kbd>" + escapeHtml(text) + "</kbd>", true);
-  let skip = false;
-  // see inventory
-  if ((text === "р" || text === "рюкзак") && state.locations[1].backpack !== false) {
-    showInventory();
-    skip = true;
-  }
 
-  let validActions = findAction(text);
-  console.log("found valid actions", validActions);
-  const validAction = validActions[0];
-
-  if (!skip && !validActions | (validActions.length != 1)) {
-    addToOutput("Не факт, что это выйдет.");
-    skip = true;
-  }
-
-  if (
-    !skip &&
-    !validAction.requiredItems.every(item => state.inventory.includes(item))
-  ) {
-    addToOutput("Чего-то не хватает!");
-    skip = true;
-  }
-
-  if (!skip) {
-    takeAction(validAction);
-    if (validAction.reaction && validAction.reaction.length != 0) {
-      addToOutput(validAction.reaction);
-    }
-
-    addToOutput("\n");
-    if (validAction.type == "move") {
-      addToOutput(state.location.initText);
-    }
-  }
+  act(text);
 
   renderState();
   saveState();

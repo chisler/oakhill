@@ -43,7 +43,7 @@ var backendURI = "https://shielded-chamber-22105.herokuapp.com/";
 
 function reportInput(text) {
   $.post(backendURI + "save/", {
-    state: JSON.stringify(state),
+    state: JSON.stringify(cleanState()),
     textInput: text,
     gameId: state.gameId
   });

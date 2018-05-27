@@ -1,7 +1,12 @@
 loadState();
 
+function cleanState() {
+  return {...state, dialog: null}
+}
+
 function saveState() {
-  localStorage.setItem("state", JSON.stringify(state));
+  // don't log dialogs
+  localStorage.setItem("state", JSON.stringify(cleanState()));
 }
 
 function updateGameId() {
@@ -24,7 +29,8 @@ function resetState() {
   state = {
     output: [],
     inventory: [],
-    location_id: 0
+    location_id: 0,
+    dialog: null
   };
   state.locations = values(locations).map(l => l.initialState);
   state.location = getCurrentLocation(state.location_id);
@@ -33,9 +39,11 @@ function resetState() {
 }
 
 function loadState() {
+  console.log("load state");
   let savedState = localStorage.getItem("state");
   if (savedState) {
     state = JSON.parse(savedState);
+    initDialog();
   } else {
     resetState();
   }
@@ -87,11 +95,6 @@ function takeAction(action) {
     requiredItems
   } = action;
   console.log("Action taken", action);
-  // debugger
-
-  if (type == "move") {
-    state.output = [];
-  }
 
   state.inventory = [...action.newItems, ...state.inventory].unique();
   Object.keys(mutateLocationState).forEach(key => {
@@ -102,7 +105,20 @@ function takeAction(action) {
   });
   state.location = getCurrentLocation(destination_id) || state.location;
   state.location_id = destination_id || state.location_id;
+
+  if (type == "move") {
+    state.output = [];
+    // debugger
+    // recreate dialog if we moved to a new location
+    initDialog();
+  }
   console.log("new state", state);
+}
+
+function initDialog() {
+  if (state.location.dialog) {
+    state.dialog = dialogs[state.location.dialog]();
+  }
 }
 
 function renderState() {
