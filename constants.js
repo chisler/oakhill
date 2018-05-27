@@ -25,7 +25,7 @@ const actions = {
     requiredItems: [],
     destination_id: 1,
     name: "takeBackpack",
-    reaction: "О, теперь будет куда положить вещи",
+    reaction: "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
     mutateLocationState: { 1: { backpack: true } },
     triggers: {
       take: ["взят", "возь", "подн"],
@@ -38,7 +38,7 @@ const actions = {
     requiredItems: [],
     destination_id: 1,
     name: "takeKlaxon",
-    reaction: "Теперь у меня есть клаксон.",
+    reaction: "НОВЫЙ ПРЕДМЕТ — клаксон.",
     mutateLocationState: { 1: { klaxon: true } },
     triggers: {
       search: ["откр", "обыск", "посм", "смотр", "загл"],
@@ -64,7 +64,7 @@ const actions = {
     requiredItems: [],
     destination_id: 2,
     name: "takeTwenty",
-    reaction: "Вау, можно столько всего купить",
+    reaction: "НОВЫЙ ПРЕДМЕТ — двадцатка.",
     mutateLocationState: { 2: { money: true } },
     triggers: {
       take: ["вз", "подн", "возьми"],
@@ -79,7 +79,7 @@ const actions = {
     reaction: "",
     name: "backToHotel",
     mutateLocationState: {},
-    triggers: { go: ["назад", "откр", "вой", "зай"], hotel: ["отел", "двер"] }
+    triggers: { go: ["откр", "вой", "зай"], hotel: ["отел", "двер"] }
   },
   goToDeer: {
     type: "move",
@@ -99,7 +99,7 @@ const actions = {
     reaction: "",
     name: "backToHotelView",
     mutateLocationState: {},
-    triggers: { go: ["назад"] }
+    triggers: { go: ["назад", "верн", "отель"] }
   },
   useKlaxon: {
     type: "use",
@@ -145,7 +145,7 @@ const locations = {
       },
       no_backpack_klaxon: {
         img: "motel_room_no_backpack.png",
-        initText: "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
+        initText: "",
         possibleActions: [actions.takeKlaxon]
       },
       backpack_no_klaxon: {

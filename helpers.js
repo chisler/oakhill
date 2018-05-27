@@ -18,3 +18,23 @@ Array.prototype.unique = function() {
 function no(boo) {
   return boo ? "no_" : "";
 }
+
+function capitalize(str) {
+  return str.replace(/((?:^|[.?!])\s*)([a-zа-яё])/g, function (m, tail, ch) {
+  return tail + ch.toUpperCase();
+});
+}
+
+const entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+  "/": "&#x2F;",
+  "`": "&#x60;",
+  "=": "&#x3D;"
+};
+function escapeHtml(string) {
+  return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
+}

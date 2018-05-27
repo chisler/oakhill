@@ -83,6 +83,6 @@ function takeAction(action) {
 }
 
 function renderState() {
-  print(state.location.initText);
+  console.log('IMAGE RENDERED')
   document.getElementById("image_id").src = "img/" + state.location.img;
 }

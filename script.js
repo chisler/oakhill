@@ -3,27 +3,37 @@ const maxLines = 4;
 const scrollback = document.querySelector(".scrollback");
 const input = document.querySelector("input");
 
-function print(text, raw = false) {
-  state.output.push(raw ? text : escapeHtml(text));
-  while (state.output.length > maxLines) {
-    state.output.shift();
-  }
+
+
+function renderText() {
   scrollback.innerHTML = state.output.join("\n");
   scrollback.scrollTop = Math.pow(2, 30); // Firefox doesn't like Number.MAX_SAFE_INTEGER for this
 }
 
+function print(text, raw = false) {
+  state.output.push(raw ? text : escapeHtml(text));
+  while (state.output.length > maxLines || state.output[0] == "\n") {
+    state.output.shift();
+  }
+  renderText();
+}
+
+function showInventory() {
+  if (state.inventory.length != 0) {
+    print(capitalize(state.inventory.join(", ") + "."));
+  } else {
+    print("Рюкзак пока пуст.");
+  }
+}
+
 function action(text) {
-  print("\n<kbd>" + escapeHtml(text) + "</kbd>", true);
+  print("<kbd>" + escapeHtml(text) + "</kbd>", true);
   // see inventory
   if ((text === "р" || text === "рюкзак") && state.locations[1] != "init") {
-    if (state.inventory.length != 0) {
-      print(state.inventory.join(", ") + ".");
-    } else {
-      print("Рюкзак пока пуст.");
-    }
+    showInventory();
     return;
   }
-  
+
   let validActions = findAction(text);
   //   handle mistakee
   if (!validActions | (validActions.length != 1)) {
@@ -33,8 +43,10 @@ function action(text) {
 
   console.log("found valid actions", validActions);
   const validAction = validActions[0];
-  if (!validAction.requiredItems.every(item => state.inventory.includes(item))) {
-    print('Чего-то не хватает!')
+  if (
+    !validAction.requiredItems.every(item => state.inventory.includes(item))
+  ) {
+    print("Чего-то не хватает!");
     return;
   }
 
@@ -43,6 +55,10 @@ function action(text) {
     print(validAction.reaction);
   }
 
+  print("\n");
+  if (validAction.type == "move") {
+    print(state.location.initText);
+  }
   renderState();
 
   return;
@@ -65,20 +81,6 @@ function init() {
   });
 
   renderState(state);
-}
-
-const entityMap = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;",
-  "/": "&#x2F;",
-  "`": "&#x60;",
-  "=": "&#x3D;"
-};
-function escapeHtml(string) {
-  return String(string).replace(/[&<>"'`=\/]/g, s => entityMap[s]);
 }
 
 init();
