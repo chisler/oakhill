@@ -101,6 +101,16 @@ const actions = {
     mutateLocationState: {},
     triggers: { go: ["назад", "верн", "отель"] }
   },
+  toOutsideSmartMartFromDeer: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 4,
+    reaction: "",
+    name: "toOutsideSmartMartFromDeer",
+    mutateLocationState: {},
+    triggers: { shop: ["впер", "ид"] }
+  },
   toSmartMartFromRoad: {
     type: "move",
     newItems: [],
@@ -111,17 +121,30 @@ const actions = {
     mutateLocationState: {},
     triggers: { shop: ["смарт", "магаз"] }
   },
-  useKlaxon: {
+  useTwenty: {
     type: "use",
-    newItems: ["двадцатка"],
-    requiredItems: ["клаксон"],
+    newItems: [],
+    requiredItems: ["двадцатка"],
     destination_id: 3,
-    name: "useKlaxon",
-    reaction: "",
+    name: "useTwenty",
+    reaction: "Ура, теперь можно пройти.",
     mutateLocationState: { 3: { deer: true } },
     triggers: {
-      rang: ["дуд", "польз", "дут"],
-      klaxon: ["клакс", "дудк", "горн"]
+      return: ["отд", "верн", "держ", "дат"],
+      money: ["ден", "двадц", "купюр", "банкнот"]
+    }
+  },
+  searchTrash: {
+    type: "use",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 4,
+    name: "searchTrash",
+    reaction: "Там кто-то есть.",
+    mutateLocationState: { 4: { trash: true } },
+    triggers: {
+      open: ["откр", "обыск", "смотр"],
+      trash: ["бач", "бак", "мусор", "корз"]
     }
   }
 };
@@ -194,16 +217,35 @@ const locations = {
     mapper: state => {
       return "deer_" + no(state.deer) + "block";
     },
-    staticActions: [actions.backToHotelView, actions.toSmartMartFromRoad],
+    staticActions: [actions.backToHotelView, actions.toOutsideSmartMartFromDeer],
     variations: {
       deer_block: {
         img: "town_entrance_deer.png",
-        initText: "Кажется, олень не даст пройти просто так. \n Я боюсь.",
-        possibleActions: [actions.useKlaxon]
+        initText: "Слушай, приятель, может, видел мою купюру? Хотел купить рубашку.",
+        possibleActions: [actions.useTwenty]
       },
       deer_no_block: {
         img: "town_entrance_no_deer.png",
         initText: "Фуууух, ушел. Можно идти",
+        possibleActions: []
+      }
+    }
+  },
+  4: {
+    initialState: { trash: false },
+    mapper: state => {
+      return "outside_smart_mart_" + no(state.trash) + "trash";
+    },
+    staticActions: [actions.backToHotelView, actions.toSmartMartFromRoad],
+    variations: {
+      outside_smart_mart_trash: {
+        img: "outside_smart_mart.png",
+        initText: "Перекресток: банк, развлечения, магазин...",
+        possibleActions: [actions.searchTrash]
+      },
+      outside_smart_mart_no_trash: {
+        img: "outside_smart_mart_imp.png",
+        initText: "АААА, это же черт!",
         possibleActions: []
       }
     }
