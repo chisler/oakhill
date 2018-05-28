@@ -99,7 +99,7 @@ const actions = {
     reaction: "",
     name: "backToHotelView",
     mutateLocationState: {},
-    triggers: { go: ["назад", "верн", "отель"] }
+    triggers: { go: ["верн", "отель"] }
   },
   toOutsideSmartMartFromDeer: {
     type: "move",
@@ -134,6 +134,17 @@ const actions = {
       money: ["ден", "двадц", "купюр", "банкнот"]
     }
   },
+  goBack: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: null,
+    name: "goBack",
+    mutateLocationState: {},
+    triggers: {
+      return: ["назад"]
+    }
+  },
   searchTrash: {
     type: "use",
     newItems: [],
@@ -148,6 +159,10 @@ const actions = {
     }
   }
 };
+
+function goBack() {
+  return { ...actions.goBack, destination_id: state.previous_location };
+}
 
 const locations = {
   0: {
@@ -217,7 +232,10 @@ const locations = {
     mapper: state => {
       return "deer_" + no(state.deer) + "block";
     },
-    staticActions: [actions.backToHotelView, actions.toOutsideSmartMartFromDeer],
+    staticActions: [
+      actions.backToHotelView,
+      actions.toOutsideSmartMartFromDeer
+    ],
     variations: {
       deer_block: {
         img: "town_entrance_deer.png",
@@ -259,8 +277,8 @@ const locations = {
     variations: {
       smart_mart: {
         dialog: "smart_mart",
-        img: "smart_mart.JPG",
-        initText: "Привет! Как помочь? \n a) Папу моего видели? \n б) Что вы продаете? ",
+        img: "smart_mart.png",
+        initText: "Привет! Как помочь?",
         possibleActions: []
       }
     }

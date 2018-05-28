@@ -48,3 +48,11 @@ function reportInput(text) {
     gameId: state.gameId
   });
 }
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}

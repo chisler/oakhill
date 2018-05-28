@@ -6,6 +6,11 @@ function renderText() {
   scrollback.scrollTop = Math.pow(2, 30); // Firefox doesn't like Number.MAX_SAFE_INTEGER for this
 }
 
+function clearOutput() {
+  state.output = [];
+  renderText();
+}
+
 function act(text) {
   if (
     (text === "р" || text === "рюкзак") &&
@@ -14,11 +19,16 @@ function act(text) {
     showInventory();
     return;
   }
-
   // check for current dialog
-  if (state.dialog && processDialog(state.dialog, text)) {
+  if (state.dialog) {
     // transition was made, action taken;
-    return;
+    if (processDialog(state.dialog, text)) {
+      return;
+    }
+  }
+
+  if (text === "назад") {
+    takeAction(goBack());
   }
 
   let validActions = findAction(text);
@@ -44,11 +54,16 @@ function act(text) {
   if (validAction.type == "move") {
     addToOutput(state.location.initText);
   }
+
+  if (state.location.dialog && state.dialog.dialog.is("init")) {
+    // should have been added already
+    fillOptions(state.dialog);
+  }
 }
 
 function action(text) {
+  clearOutput();
   addToOutput("<kbd>" + escapeHtml(text) + "</kbd>", true);
-
   act(text);
 
   renderState();

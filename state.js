@@ -1,7 +1,7 @@
 loadState();
 
 function cleanState() {
-  return {...state, dialog: null}
+  return { ...state, dialog: null };
 }
 
 function saveState() {
@@ -30,7 +30,8 @@ function resetState() {
     output: [],
     inventory: [],
     location_id: 0,
-    dialog: null
+    dialog: null,
+    previous_location: 0,
   };
   state.locations = values(locations).map(l => l.initialState);
   state.location = getCurrentLocation(state.location_id);
@@ -49,7 +50,7 @@ function loadState() {
   }
 }
 
-function addToOutput(text, raw = false, maxLines = 4) {
+function addToOutput(text, raw = false, maxLines = 5) {
   state.output.push(raw ? text : escapeHtml(text));
   while (state.output.length > maxLines || state.output[0] == "\n") {
     state.output.shift();
@@ -96,6 +97,7 @@ function takeAction(action) {
   } = action;
   console.log("Action taken", action);
 
+
   state.inventory = [...action.newItems, ...state.inventory].unique();
   Object.keys(mutateLocationState).forEach(key => {
     state.locations[key] = {
@@ -104,6 +106,7 @@ function takeAction(action) {
     };
   });
   state.location = getCurrentLocation(destination_id) || state.location;
+  state.previous_location = state.location_id;
   state.location_id = destination_id || state.location_id;
 
   if (type == "move") {
@@ -117,7 +120,8 @@ function takeAction(action) {
 
 function initDialog() {
   if (state.location.dialog) {
-    state.dialog = dialogs[state.location.dialog]();
+    const dialog = dialogs[state.location.dialog]();
+    state.dialog = dialog;
   }
 }
 

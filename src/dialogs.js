@@ -1,7 +1,15 @@
-function processDialog(
-  { dialog, requirements, currentOptions, optionNames },
-  text
-) {
+function fillOptions({ dialog, requirements, currentOptions, optionNames }) {
+  const alphabet = ["а", "б", "в", "г", "д"];
+
+  dialog.transitions().forEach((t, i) => {
+    currentOptions[t] = alphabet[i];
+    addToOutput(`${currentOptions[t]}) — ${optionNames[t]}`);
+  });
+}
+
+function processDialog(dialogWrapper, text) {
+  const { dialog, requirements, currentOptions, optionNames } = dialogWrapper;
+
   const chosenTransitions = dialog
     .transitions()
     .filter(tran => currentOptions[tran] === text);
@@ -16,11 +24,7 @@ function processDialog(
   } else {
     addToOutput("Не получится...");
   }
-  const alphabet = ["а", "б", "в"];
-  dialog.transitions().forEach((t, i) => {
-    currentOptions[t] = alphabet[i];
-    addToOutput(`${currentOptions[t]}) — ${optionNames[t]}`);
-  });
+  fillOptions(dialogWrapper);
   return true;
 }
 

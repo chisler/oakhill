@@ -1,14 +1,14 @@
 function createSmartMartDialog() {
   var shopDialog = new StateMachine({
-    init: "greeting",
+    init: "init",
     transitions: [
-      { name: "askAboutFather", from: "greeting", to: "father" },
+      { name: "askAboutFather", from: "init", to: "father" },
       { name: "askAboutGoods", from: "father", to: "trade" },
-      { name: "askAboutGoods", from: "greeting", to: "trade" },
+      { name: "askAboutGoods", from: "init", to: "trade" },
       { name: "buyLighter", from: "trade", to: "lighter" },
       { name: "buyToy", from: "trade", to: "toy" },
 
-      { name: "goodbuy", from: "greeting", to: "end" },
+      { name: "goodbuy", from: "init", to: "end" },
       { name: "goodbuy", from: "father", to: "end" },
       { name: "goodbuy", from: "trade", to: "end" },
     ],
@@ -40,14 +40,6 @@ function createSmartMartDialog() {
     }
   });
 
-  const initialOptions = {
-    askAboutFather: "а",
-    askAboutGoods: "б",
-    buyLighter: "a",
-    buyToy: "б",
-    goodbuy: "к"
-  };
-
   const optionNames = {
     askAboutFather: "Видели моего папу?",
     askAboutGoods: "Что можно купить?",
@@ -75,7 +67,7 @@ function createSmartMartDialog() {
   return {
     dialog: shopDialog,
     requirements: requirements,
-    currentOptions: initialOptions,
+    currentOptions: {},
     optionNames
   };
 }
