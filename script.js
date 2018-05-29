@@ -12,9 +12,11 @@ function clearOutput() {
 }
 
 function act(text) {
+  const weHaveABackpack = state.locations[1].backpack !== false;
+
   if (
     (text === "р" || text === "рюкзак") &&
-    state.locations[1].backpack !== false
+    weHaveABackpack
   ) {
     showInventory();
     return;
@@ -47,6 +49,12 @@ function act(text) {
       addToOutput("Чего-то не хватает!");
       return;
     }
+
+    if (validAction.type == "take" && !weHaveABackpack) {
+      addToOutput("Новый предмет не во что убрать.");
+      return;
+    }
+
     takeAction(validAction);
     if (validAction.reaction && validAction.reaction.length != 0) {
       addToOutput(validAction.reaction);
@@ -67,7 +75,7 @@ function act(text) {
 function action(text) {
   clearOutput();
   addToOutput("<kbd>" + escapeHtml(text) + "</kbd>", true);
-  act(text);
+  act(text.toLowerCase());
 
   renderState();
   saveState();

@@ -1,3 +1,7 @@
+const commonTriggers = {
+  talk: ["привет", "говор", "здрав", "хей"]
+};
+
 const actions = {
   start: {
     type: "move",
@@ -18,12 +22,11 @@ const actions = {
     triggers: { door: ["двер", "улиц"], open: ["выйт", "откр"] }
   },
   takeBackpack: {
-    type: "take",
+    type: "use",
     newItems: [],
     requiredItems: [],
     destination_id: 1,
-    reaction:
-      "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
+    reaction: "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
     mutateLocationState: { 1: { backpack: true } },
     triggers: {
       take: ["взят", "возь", "подн"],
@@ -63,7 +66,7 @@ const actions = {
     mutateLocationState: { 2: { money: true } },
     triggers: {
       take: ["вз", "подн", "возьми"],
-      twenty: ["ден", "двадц", "купюр", "банкнот"]
+      twenty: ["ден", "двадц", "купюр", "банкнот", "моне"]
     }
   },
   backToHotel: {
@@ -82,7 +85,28 @@ const actions = {
     destination_id: 3,
     reaction: "",
     mutateLocationState: {},
-    triggers: { go: ["ид"], further: ["дорог", "впер"] }
+    triggers: { go: ["ид"], further: ["дорог", "впер", "город", "оак хилл"] }
+  },
+  talkToDeer: {
+    type: "talk",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 3,
+    reaction: "",
+    mutateLocationState: { 3: { deer_talking: true } },
+    triggers: { hey: commonTriggers.talk }
+  },
+  useTwenty: {
+    type: "use",
+    newItems: [],
+    requiredItems: ["двадцатка"],
+    destination_id: 3,
+    reaction: "Ура, теперь можно пройти.",
+    mutateLocationState: { 3: { deer: true } },
+    triggers: {
+      return: ["отд", "верн", "держ", "дат"],
+      money: ["ден", "двадц", "купюр", "банкнот", "монет"]
+    }
   },
   backToHotelView: {
     type: "move",
@@ -100,7 +124,7 @@ const actions = {
     destination_id: 4,
     reaction: "",
     mutateLocationState: {},
-    triggers: { go: ["верн", "перекрест"] }
+    triggers: { go: ["верн", "перекрест", "выйт"] }
   },
   toOutsideSmartMartFromDeer: {
     type: "move",
@@ -127,19 +151,7 @@ const actions = {
     destination_id: 6,
     reaction: "",
     mutateLocationState: {},
-    triggers: { bank: ["банк"] }
-  },
-  useTwenty: {
-    type: "use",
-    newItems: [],
-    requiredItems: ["двадцатка"],
-    destination_id: 3,
-    reaction: "Ура, теперь можно пройти.",
-    mutateLocationState: { 3: { deer: true } },
-    triggers: {
-      return: ["отд", "верн", "держ", "дат"],
-      money: ["ден", "двадц", "купюр", "банкнот"]
-    }
+    triggers: { bank: ["банк", "налево"] }
   },
   goBack: {
     type: "move",
@@ -152,7 +164,7 @@ const actions = {
     }
   },
   searchTrash: {
-    type: "talk",
+    type: "use",
     newItems: [],
     requiredItems: [],
     destination_id: 4,
@@ -161,6 +173,17 @@ const actions = {
     triggers: {
       open: ["откр", "обыск", "смотр"],
       trash: ["бач", "бак", "мусор", "корз"]
+    }
+  },
+  talkToImp: {
+    type: "talk",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 4,
+    reaction: "",
+    mutateLocationState: { 4: { talk: true } },
+    triggers: {
+      talk: commonTriggers.talk
     }
   },
   askForCigarette: {
@@ -218,7 +241,7 @@ const actions = {
     reaction: "",
     mutateLocationState: {},
     triggers: {
-      arcade: ["аркад", "игров", "автом"]
+      arcade: ["аркад", "игров", "автом", "направ"]
     }
   }
 };
@@ -291,18 +314,26 @@ const locations = {
     }
   },
   3: {
-    initialState: { deer: false },
+    initialState: { deer: false, deer_talking: false },
     mapper: state => {
-      return "deer_" + no(state.deer) + "block";
+      if (!state.deer && !state.deer_talking) {
+        return "deer_block";
+      }
+      if (!state.deer && state.deer_talking) {
+        return "deer_talk";
+      }
+      return "deer_no_block";
     },
-    staticActions: [
-      actions.backToHotelView,
-    ],
+    staticActions: [actions.backToHotelView],
     variations: {
       deer_block: {
         img: "town_entrance_deer.png",
-        initText:
-          "Слушай, приятель, может, видел мою купюру? Хотел купить рубашку. \n Отдай монету, а не то я рассержусь.",
+        initText: "Что это тут...",
+        possibleActions: [actions.talkToDeer]
+      },
+      deer_talk: {
+        img: "town_entrance_deer.png",
+        initText: "Слушай, приятель, может, видел мою купюру? Хотел купить рубашку. \n Отдай монету, а не то я рассержусь.",
         possibleActions: [actions.useTwenty]
       },
       deer_no_block: {
@@ -313,9 +344,14 @@ const locations = {
     }
   },
   4: {
-    initialState: { trash: false },
+    initialState: { trash: false, talk: false },
     mapper: state => {
-      return "outside_smart_mart_" + no(state.trash) + "trash";
+      return (
+        "outside_smart_mart_" +
+        no(state.trash) +
+        "trash" +
+        (state.talk ? "_talk" : "")
+      );
     },
     staticActions: [
       actions.backToHotelView,
@@ -330,6 +366,11 @@ const locations = {
         possibleActions: [actions.searchTrash]
       },
       outside_smart_mart_no_trash: {
+        img: "outside_smart_mart_imp.png",
+        initText: "Ха!",
+        possibleActions: [actions.talkToImp]
+      },
+      outside_smart_mart_no_trash_talk: {
         dialog: "imp",
         img: "outside_smart_mart_imp.png",
         initText: "Привет! Есть сигарета? За сигарету скажу, где взять деньги. \n За зажигалку..кое-что покруче.",
