@@ -40,7 +40,7 @@ html, body {
 }
 .Modal-content {
   margin: 0 auto;
-  max-width: 600px;
+  /* max-width: 80%; */
 }
 
 input {
@@ -67,7 +67,8 @@ input:focus {
 
 .picture {
   width: 554px;
-  height: 310px;
+  height: 305px;
+  image-rendering: pixelated
 }
 
 .border { border-width: 1px; border-color: white; border-style: solid; } 

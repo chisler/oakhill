@@ -4,7 +4,6 @@ const actions = {
     newItems: [],
     requiredItems: [],
     destination_id: 1,
-    name: "start",
     reaction: "",
     mutateLocationState: {},
     triggers: { agree: ["ок", "да"] }
@@ -14,7 +13,6 @@ const actions = {
     newItems: [],
     requiredItems: [],
     destination_id: 2,
-    name: "leaveHotel",
     reaction: "",
     mutateLocationState: {},
     triggers: { door: ["двер", "улиц"], open: ["выйт", "откр"] }
@@ -24,8 +22,8 @@ const actions = {
     newItems: [],
     requiredItems: [],
     destination_id: 1,
-    name: "takeBackpack",
-    reaction: "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
+    reaction:
+      "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
     mutateLocationState: { 1: { backpack: true } },
     triggers: {
       take: ["взят", "возь", "подн"],
@@ -37,7 +35,6 @@ const actions = {
     newItems: ["клаксон"],
     requiredItems: [],
     destination_id: 1,
-    name: "takeKlaxon",
     reaction: "НОВЫЙ ПРЕДМЕТ — клаксон.",
     mutateLocationState: { 1: { klaxon: true } },
     triggers: {
@@ -50,7 +47,6 @@ const actions = {
     newItems: [],
     requiredItems: [],
     destination_id: 1,
-    name: "watchTV",
     reaction: "Телек не работает",
     mutateLocationState: {},
     triggers: {
@@ -63,7 +59,6 @@ const actions = {
     newItems: ["двадцатка"],
     requiredItems: [],
     destination_id: 2,
-    name: "takeTwenty",
     reaction: "НОВЫЙ ПРЕДМЕТ — двадцатка.",
     mutateLocationState: { 2: { money: true } },
     triggers: {
@@ -77,7 +72,6 @@ const actions = {
     requiredItems: [],
     destination_id: 1,
     reaction: "",
-    name: "backToHotel",
     mutateLocationState: {},
     triggers: { go: ["откр", "вой", "зай"], hotel: ["отел", "двер"] }
   },
@@ -87,7 +81,6 @@ const actions = {
     requiredItems: [],
     destination_id: 3,
     reaction: "",
-    name: "goToDeer",
     mutateLocationState: {},
     triggers: { go: ["ид"], further: ["дорог", "впер"] }
   },
@@ -97,9 +90,17 @@ const actions = {
     requiredItems: [],
     destination_id: 2,
     reaction: "",
-    name: "backToHotelView",
     mutateLocationState: {},
     triggers: { go: ["верн", "отель"] }
+  },
+  backToOutsideSmartMart: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 4,
+    reaction: "",
+    mutateLocationState: {},
+    triggers: { go: ["верн", "перекрест"] }
   },
   toOutsideSmartMartFromDeer: {
     type: "move",
@@ -107,7 +108,6 @@ const actions = {
     requiredItems: [],
     destination_id: 4,
     reaction: "",
-    name: "toOutsideSmartMartFromDeer",
     mutateLocationState: {},
     triggers: { shop: ["впер", "ид"] }
   },
@@ -117,16 +117,23 @@ const actions = {
     requiredItems: [],
     destination_id: 5,
     reaction: "",
-    name: "toSmartMartFromRoad",
     mutateLocationState: {},
     triggers: { shop: ["смарт", "магаз"] }
+  },
+  toBank: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 6,
+    reaction: "",
+    mutateLocationState: {},
+    triggers: { bank: ["банк"] }
   },
   useTwenty: {
     type: "use",
     newItems: [],
     requiredItems: ["двадцатка"],
     destination_id: 3,
-    name: "useTwenty",
     reaction: "Ура, теперь можно пройти.",
     mutateLocationState: { 3: { deer: true } },
     triggers: {
@@ -139,23 +146,79 @@ const actions = {
     newItems: [],
     requiredItems: [],
     destination_id: null,
-    name: "goBack",
     mutateLocationState: {},
     triggers: {
       return: ["назад"]
     }
   },
   searchTrash: {
-    type: "use",
+    type: "talk",
     newItems: [],
     requiredItems: [],
     destination_id: 4,
-    name: "searchTrash",
-    reaction: "Там кто-то есть.",
+    reaction: "",
     mutateLocationState: { 4: { trash: true } },
     triggers: {
       open: ["откр", "обыск", "смотр"],
       trash: ["бач", "бак", "мусор", "корз"]
+    }
+  },
+  askForCigarette: {
+    type: "take",
+    newItems: ["сигарета"],
+    requiredItems: [],
+    destination_id: 6,
+    reaction: "НОВЫЙ ПРЕДМЕТ — сигарета.",
+    mutateLocationState: {},
+    triggers: {
+      ask: ["спрос", "стрель", "попро"],
+      trash: ["таба", "сиж", "дым", "сиг"]
+    }
+  },
+  goToAtm: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 7,
+    reaction: "",
+    mutateLocationState: {},
+    triggers: {
+      come: ["подой", "идт", "иди", "сня"],
+      atm: ["ден", "кэш", "налич", "банком", "атм", "atm"]
+    }
+  },
+  breakATM: {
+    type: "take",
+    newItems: ["доллар"],
+    requiredItems: [],
+    destination_id: 7,
+    reaction: "НОВЫЙ ПРЕДМЕТ — доллар.",
+    mutateLocationState: { 7: { atm: true } },
+    triggers: {
+      code: ["1111"]
+    }
+  },
+  killAlien: {
+    type: "use",
+    newItems: [],
+    requiredItems: ["бластер"],
+    destination_id: 8,
+    reaction: "Ура, пришелец повержен!",
+    mutateLocationState: { 8: { alien: true } },
+    triggers: {
+      shoot: ["стрел", "убит", "замоч", "пуль", "испол"],
+      blaster: ["бласт", "пистолет", "оруж"]
+    }
+  },
+  goToArcade: {
+    type: "move",
+    newItems: [],
+    requiredItems: [],
+    destination_id: 8,
+    reaction: "",
+    mutateLocationState: {},
+    triggers: {
+      arcade: ["аркад", "игров", "автом"]
     }
   }
 };
@@ -234,18 +297,18 @@ const locations = {
     },
     staticActions: [
       actions.backToHotelView,
-      actions.toOutsideSmartMartFromDeer
     ],
     variations: {
       deer_block: {
         img: "town_entrance_deer.png",
-        initText: "Слушай, приятель, может, видел мою купюру? Хотел купить рубашку.",
+        initText:
+          "Слушай, приятель, может, видел мою купюру? Хотел купить рубашку. \n Отдай монету, а не то я рассержусь.",
         possibleActions: [actions.useTwenty]
       },
       deer_no_block: {
         img: "town_entrance_no_deer.png",
         initText: "Фуууух, ушел. Можно идти",
-        possibleActions: []
+        possibleActions: [actions.toOutsideSmartMartFromDeer]
       }
     }
   },
@@ -254,7 +317,12 @@ const locations = {
     mapper: state => {
       return "outside_smart_mart_" + no(state.trash) + "trash";
     },
-    staticActions: [actions.backToHotelView, actions.toSmartMartFromRoad],
+    staticActions: [
+      actions.backToHotelView,
+      actions.toSmartMartFromRoad,
+      actions.toBank,
+      actions.goToArcade
+    ],
     variations: {
       outside_smart_mart_trash: {
         img: "outside_smart_mart.png",
@@ -262,8 +330,9 @@ const locations = {
         possibleActions: [actions.searchTrash]
       },
       outside_smart_mart_no_trash: {
+        dialog: "imp",
         img: "outside_smart_mart_imp.png",
-        initText: "АААА, это же черт!",
+        initText: "Привет! Есть сигарета? За сигарету скажу, где взять деньги. \n За зажигалку..кое-что покруче.",
         possibleActions: []
       }
     }
@@ -273,12 +342,69 @@ const locations = {
     mapper: state => {
       return "smart_mart";
     },
-    staticActions: [actions.backToHotelView],
+    staticActions: [actions.backToOutsideSmartMart],
     variations: {
       smart_mart: {
         dialog: "smart_mart",
         img: "smart_mart.png",
         initText: "Привет! Как помочь?",
+        possibleActions: []
+      }
+    }
+  },
+  6: {
+    initialState: {},
+    mapper: state => {
+      return "bank";
+    },
+    staticActions: [
+      actions.backToOutsideSmartMart,
+      actions.askForCigarette,
+      actions.goToAtm
+    ],
+    variations: {
+      bank: {
+        // dialog: "smart_mart",
+        img: "bank.png",
+        initText: "Довольно тоскливое место.",
+        possibleActions: []
+      }
+    }
+  },
+  7: {
+    initialState: { atm: false },
+    mapper: state => {
+      return "atm_" + no(state.atm) + "working";
+    },
+    staticActions: [actions.backToOutsideSmartMart],
+    variations: {
+      atm_working: {
+        img: "atm.png",
+        initText: "Пожалуйста, вставьте карту или введите секретный код.",
+        possibleActions: [actions.breakATM]
+      },
+      atm_no_working: {
+        img: "atm_broken.png",
+        initText: "Кэш машина сломалась...",
+        possibleActions: []
+      }
+    }
+  },
+  8: {
+    initialState: { alien: false },
+    mapper: state => {
+      return "arcade_" + no(state.alien) + "alien";
+    },
+    staticActions: [actions.backToOutsideSmartMart],
+    variations: {
+      arcade_alien: {
+        img: "arcade_alien.JPG",
+        initText: "Похоже, вход охраняет пришелец",
+        possibleActions: [actions.killAlien]
+      },
+      arcade_no_alien: {
+        img: "arcade_no_alien.JPG",
+        initText: "Ура, можно играть!",
         possibleActions: []
       }
     }

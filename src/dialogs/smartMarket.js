@@ -17,19 +17,16 @@ function createSmartMartDialog() {
         addToOutput(
           "Мужчина заходил час назад, кудрявый и в очках. \n Искал какого-то мальчика..."
         );
-        console.log("NEVER SEEN HIM. Want to see the trades?");
       },
       onAskAboutGoods: function() {
         addToOutput(
           "У меня есть сигареты и пиво, но тебе нельзя."
-          //  Выбирай: \n а) зажигалка — $1" +
-          // " \n б) игрушка Капитан Динозавр — $5 \n еще есть сигареты и пиво, но тебе нельзя."
         );
-        console.log("OH, THESE ARE MY TRADES");
       },
       onBuyLighter: function() {
         addToOutput("НОВЫЙ ПРЕДМЕТ — зажигалка.");
         useItem("доллар");
+        giveItem("зажигалка");
       },
       onBuyToy: function() {
         console.log("don't lie you don't have money");

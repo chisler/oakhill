@@ -11,10 +11,14 @@ function inventoryHas(item) {
 }
 
 function useItem(item) {
-  var index = state.inventory.indexOf(5);
+  var index = state.inventory.indexOf(item);
   if (index > -1) {
     state.inventory.splice(index, 1);
     return true
   }
   return false
+}
+
+function giveItem(item) {
+  state.inventory.push(item);
 }

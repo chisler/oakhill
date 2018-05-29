@@ -29,30 +29,33 @@ function act(text) {
 
   if (text === "назад") {
     takeAction(goBack());
-  }
-
-  let validActions = findAction(text);
-  if (!validActions | (validActions.length != 1)) {
-    addToOutput("Не факт, что это выйдет.");
-    return;
-  }
-  const validAction = validActions[0];
-
-  if (
-    !validAction.requiredItems.every(item => state.inventory.includes(item))
-  ) {
-    addToOutput("Чего-то не хватает!");
-    return;
-  }
-
-  takeAction(validAction);
-  if (validAction.reaction && validAction.reaction.length != 0) {
-    addToOutput(validAction.reaction);
-  }
-
-  addToOutput("\n");
-  if (validAction.type == "move") {
     addToOutput(state.location.initText);
+  } else {
+    let validActions = findAction(text);
+    if (!validActions | (validActions.length != 1)) {
+      addToOutput("Не факт, что это выйдет.");
+      if (state.dialog) {
+        fillOptions(state.dialog);
+      }
+      return;
+    }
+    const validAction = validActions[0];
+
+    if (
+      !validAction.requiredItems.every(item => state.inventory.includes(item))
+    ) {
+      addToOutput("Чего-то не хватает!");
+      return;
+    }
+    takeAction(validAction);
+    if (validAction.reaction && validAction.reaction.length != 0) {
+      addToOutput(validAction.reaction);
+    }
+
+    // addToOutput("\n");
+    if (validAction.type == "move" || validAction.type == "talk") {
+      addToOutput(state.location.initText);
+    }
   }
 
   if (state.location.dialog && state.dialog.dialog.is("init")) {

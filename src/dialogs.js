@@ -29,5 +29,6 @@ function processDialog(dialogWrapper, text) {
 }
 
 const dialogs = {
-  smart_mart: createSmartMartDialog
+  smart_mart: createSmartMartDialog,
+  imp: createImpDialog
 };

@@ -31,7 +31,7 @@ function resetState() {
     inventory: [],
     location_id: 0,
     dialog: null,
-    previous_location: 0,
+    previous_location: 0
   };
   state.locations = values(locations).map(l => l.initialState);
   state.location = getCurrentLocation(state.location_id);
@@ -97,8 +97,9 @@ function takeAction(action) {
   } = action;
   console.log("Action taken", action);
 
-
+  requiredItems.forEach(i => useItem(i));
   state.inventory = [...action.newItems, ...state.inventory].unique();
+  
   Object.keys(mutateLocationState).forEach(key => {
     state.locations[key] = {
       ...state.locations[key],
@@ -106,10 +107,14 @@ function takeAction(action) {
     };
   });
   state.location = getCurrentLocation(destination_id) || state.location;
-  state.previous_location = state.location_id;
+  // dont update if hasn't changed
+  if (destination_id != state.location_id) {
+    state.previous_location = state.location_id;
+  }
   state.location_id = destination_id || state.location_id;
 
-  if (type == "move") {
+  state.dialog = null;
+  if (type == "move" || type == "talk") {
     state.output = [];
     // debugger
     // recreate dialog if we moved to a new location
