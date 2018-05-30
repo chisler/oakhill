@@ -439,12 +439,12 @@ const locations = {
     staticActions: [actions.backToOutsideSmartMart],
     variations: {
       arcade_alien: {
-        img: "arcade_alien.JPG",
+        img: "outside_arcade_alien.png",
         initText: "Похоже, вход охраняет пришелец",
         possibleActions: [actions.killAlien]
       },
       arcade_no_alien: {
-        img: "arcade_no_alien.JPG",
+        img: "outside_arcade.png",
         initText: "Ура, можно играть!",
         possibleActions: []
       }
