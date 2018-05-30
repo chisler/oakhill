@@ -333,7 +333,7 @@ const locations = {
       },
       deer_talk: {
         img: "town_entrance_deer.png",
-        initText: "Привет. Не обращай внимания, я просто ищу тут свою двадцатку. \n Она была у меня в руках, а потом... \n Ты случайно не видела её?",
+        initText: "Привет. Не обращай внимания, я просто ищу тут свою двадцатку. \n Она была у меня в руках, а потом...",
         possibleActions: [actions.useTwenty]
       },
       deer_no_block: {
@@ -362,7 +362,7 @@ const locations = {
     variations: {
       outside_smart_mart_trash: {
         img: "outside_smart_mart.png",
-        initText: "Магазин работает круглосуточно. Налево – банк, направо – игровой зал. \n Из мусорного бака доносятся странные звуки...",
+        initText: "Магазин работает круглосуточно. \n Налево – банк, направо – игровой зал. \n Из мусорного бака доносятся странные звуки...",
         possibleActions: [actions.searchTrash]
       },
       outside_smart_mart_no_trash: {
@@ -373,7 +373,7 @@ const locations = {
       outside_smart_mart_no_trash_talk: {
         dialog: "imp",
         img: "outside_smart_mart_imp.png",
-        initText: "Привет! Есть сигарета? За сигарету скажу, где взять деньги. За зажигалку..кое-что покруче.",
+        initText: "Привет! Есть сигарета? За сигарету скажу, где взять деньги. \n За зажигалку..кое-что покруче.",
         possibleActions: []
       }
     }
