@@ -1,5 +1,5 @@
 const commonTriggers = {
-  talk: ["привет", "говор", "здрав", "хей"]
+  talk: ["привет", "говор", "здрав", "хей", "поговор"]
 };
 
 const actions = {
@@ -19,14 +19,14 @@ const actions = {
     destination_id: 2,
     reaction: "",
     mutateLocationState: {},
-    triggers: { door: ["двер", "улиц"], open: ["выйт", "откр"] }
+    triggers: { door: ["двер", "улиц", "номер"], open: ["выйт", "откр", "ид"] }
   },
   takeBackpack: {
     type: "use",
     newItems: [],
     requiredItems: [],
     destination_id: 1,
-    reaction: "Ммм...теперь у меня есть рюкзак. \n Можно проверить его командой «р» или «рюкзак»",
+    reaction: "Твой рюкзак может пригодиться. \n Чтобы посмотреть, что в нём лежит, набери «р».",
     mutateLocationState: { 1: { backpack: true } },
     triggers: {
       take: ["взят", "возь", "подн"],
@@ -50,7 +50,7 @@ const actions = {
     newItems: [],
     requiredItems: [],
     destination_id: 1,
-    reaction: "Телек не работает",
+    reaction: "Телек не работает.",
     mutateLocationState: {},
     triggers: {
       turnOn: ["смотр", "вкл", "вруб"],
@@ -76,7 +76,7 @@ const actions = {
     destination_id: 1,
     reaction: "",
     mutateLocationState: {},
-    triggers: { go: ["откр", "вой", "зай"], hotel: ["отел", "двер"] }
+    triggers: { go: ["откр", "вой", "зай", "ид"], hotel: ["мотел", "отел", "двер", "номер"] }
   },
   goToDeer: {
     type: "move",
@@ -85,7 +85,7 @@ const actions = {
     destination_id: 3,
     reaction: "",
     mutateLocationState: {},
-    triggers: { go: ["ид"], further: ["дорог", "впер", "город", "оак хилл"] }
+    triggers: { go: ["ид", "пойт"], further: ["дорог", "впер", "город", "оак хилл"] }
   },
   talkToDeer: {
     type: "talk",
@@ -101,7 +101,7 @@ const actions = {
     newItems: [],
     requiredItems: ["двадцатка"],
     destination_id: 3,
-    reaction: "Ура, теперь можно пройти.",
+    reaction: "Спасибо!",
     mutateLocationState: { 3: { deer: true } },
     triggers: {
       return: ["отд", "верн", "держ", "дат"],
@@ -124,7 +124,7 @@ const actions = {
     destination_id: 4,
     reaction: "",
     mutateLocationState: {},
-    triggers: { go: ["верн", "перекрест", "выйт"] }
+    triggers: { go: ["верн", "перекрест", "выйт", "магаз"] }
   },
   toOutsideSmartMartFromDeer: {
     type: "move",
@@ -226,7 +226,7 @@ const actions = {
     newItems: [],
     requiredItems: ["бластер"],
     destination_id: 8,
-    reaction: "Ура, пришелец повержен!",
+    reaction: "Пришелец взорвался!",
     mutateLocationState: { 8: { alien: true } },
     triggers: {
       shoot: ["стрел", "убит", "замоч", "пуль", "испол"],
@@ -328,17 +328,17 @@ const locations = {
     variations: {
       deer_block: {
         img: "town_entrance_deer.png",
-        initText: "Что это тут...",
+        initText: "На дороге стоит олень.",
         possibleActions: [actions.talkToDeer]
       },
       deer_talk: {
         img: "town_entrance_deer.png",
-        initText: "Слушай, приятель, может, видел мою купюру? Хотел купить рубашку. \n Отдай монету, а не то я рассержусь.",
+        initText: "Привет. Не обращай внимания, я просто ищу тут свою двадцатку. \n Она была у меня в руках, а потом... \n Ты случайно не видела её?",
         possibleActions: [actions.useTwenty]
       },
       deer_no_block: {
         img: "town_entrance_no_deer.png",
-        initText: "Фуууух, ушел. Можно идти",
+        initText: "Олень ушел.",
         possibleActions: [actions.toOutsideSmartMartFromDeer]
       }
     }
@@ -362,7 +362,7 @@ const locations = {
     variations: {
       outside_smart_mart_trash: {
         img: "outside_smart_mart.png",
-        initText: "Перекресток: банк, развлечения, магазин...",
+        initText: "Магазин работает круглосуточно. Налево – банк, направо – игровой зал. \n Из мусорного бака доносятся странные звуки...",
         possibleActions: [actions.searchTrash]
       },
       outside_smart_mart_no_trash: {
@@ -373,7 +373,7 @@ const locations = {
       outside_smart_mart_no_trash_talk: {
         dialog: "imp",
         img: "outside_smart_mart_imp.png",
-        initText: "Привет! Есть сигарета? За сигарету скажу, где взять деньги. \n За зажигалку..кое-что покруче.",
+        initText: "Привет! Есть сигарета? За сигарету скажу, где взять деньги. За зажигалку..кое-что покруче.",
         possibleActions: []
       }
     }
